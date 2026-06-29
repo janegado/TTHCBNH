@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TTHC Bắc Ninh Hòa – Bộ câu hỏi tra cứu</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0ece4;
+    --card: #fff;
+    --navy: #1c3557;
+    --sea: #2d6a8f;
+    --sand: #b8952a;
+    --text: #2a2a2a;
+    --muted: #6b7280;
+    --border: #e2ddd6;
+    --tag1: #e8f0f8;
+    --tag2: #e6f4ea;
+    --tag3: #fef3e2;
+    --highlight: #fff3cd;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    color: #fff;
+    padding: 20px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .header h1 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .header p {
+    font-size: 12px;
+    opacity: 0.7;
+    margin-top: 2px;
+  }
+
+  /* SEARCH */
+  .search-wrap {
+    margin-top: 12px;
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: 10px 40px 10px 14px;
+    border-radius: 8px;
+    border: none;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 14px;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    outline: none;
+  }
+  .search-wrap input::placeholder { color: rgba(255,255,255,0.5); }
+  .search-wrap input:focus { background: rgba(255,255,255,0.2); }
+  .search-icon {
+    position: absolute; right: 12px; top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.5; font-size: 16px;
+  }
+  #search-count {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 6px;
+  }
+
+  /* MAIN */
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--card);
+    color: var(--muted);
+  }
+  .tab-btn.active-1 { background: var(--tag1); color: var(--sea); border-color: var(--sea); }
+  .tab-btn.active-2 { background: var(--tag2); color: #2e7d32; border-color: #2e7d32; }
+  .tab-btn.active-3 { background: var(--tag3); color: #92600a; border-color: #b8952a; }
+  .tab-btn.active-all { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+  /* SECTION */
+  .section { margin-bottom: 28px; }
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title.t1 { background: var(--tag1); color: var(--sea); }
+  .section-title.t2 { background: var(--tag2); color: #2e7d32; }
+  .section-title.t3 { background: var(--tag3); color: #92600a; }
+
+  /* QUESTION CARDS */
+  .q-list { display: flex; flex-direction: column; gap: 6px; }
+
+  .q-card {
+    background: var(--card);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    padding: 13px 16px;
+    cursor: pointer;
+    transition: box-shadow 0.15s, border-color 0.15s;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .q-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-color: #c5bfb5; }
+  .q-card.hidden { display: none; }
+  .q-card.highlight { background: var(--highlight); border-color: var(--sand); }
+
+  .q-num {
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .q-num.c1 { background: var(--tag1); color: var(--sea); }
+  .q-num.c2 { background: var(--tag2); color: #2e7d32; }
+  .q-num.c3 { background: var(--tag3); color: #92600a; }
+
+  .q-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text);
+    flex: 1;
+  }
+  .q-text mark {
+    background: #ffe58f;
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+
+  .copy-btn {
+    opacity: 0;
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-family: 'Be Vietnam Pro', sans-serif;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .q-card:hover .copy-btn { opacity: 1; }
+  .copy-btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .copy-btn.copied { background: #e8f5e9; color: #2e7d32; border-color: #a5d6a7; }
+
+  /* NO RESULT */
+  .no-result {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .no-result.show { display: block; }
+
+  /* FOOTER NOTE */
+  .footer-note {
+    margin-top: 32px;
+    padding: 14px 16px;
+    background: var(--card);
+    border-radius: 8px;
+    border-left: 4px solid var(--sand);
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .footer-note strong { color: var(--text); }
+
+  /* MOBILE */
+  @media (max-width: 600px) {
+    .header h1 { font-size: 15px; }
+    .q-text { font-size: 13px; }
+    .copy-btn { display: none; }
+    .tabs { gap: 6px; }
+    .tab-btn { padding: 6px 12px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <h1>📋 TTHC Bắc Ninh Hòa – Bộ câu hỏi tra cứu NotebookLM</h1>
+    <p>67 câu hỏi • 3 mục đích • Đất đai / Xây dựng / Bồi thường / Nông nghiệp</p>
+    <div class="search-wrap">
+      <input type="text" id="search" placeholder="Tìm câu hỏi... (vd: sang tên, tách thửa, xin phép xây)" oninput="doSearch(this.value)">
+      <span class="search-icon">🔍</span>
+    </div>
+    <div id="search-count"></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active-all" onclick="filterTab('all', this)">🔍 Tất cả (67)</button>
+    <button class="tab-btn" onclick="filterTab('1', this)">💬 Mục đích 1 – Trả lời khách (21)</button>
+    <button class="tab-btn" onclick="filterTab('2', this)">⚖️ Mục đích 2 – Vướng mắc pháp lý (29)</button>
+    <button class="tab-btn" onclick="filterTab('3', this)">📁 Mục đích 3 – Chuẩn bị hồ sơ (17)</button>
+  </div>
+
+  <!-- MỤC ĐÍCH 1 -->
+  <div class="section" id="sec1">
+    <div class="section-title t1">💬 Mục đích 1 — Trả lời khách hỏi thủ tục</div>
+    <div class="q-list" id="list1"></div>
+  </div>
+
+  <!-- MỤC ĐÍCH 2 -->
+  <div class="section" id="sec2">
+    <div class="section-title t2">⚖️ Mục đích 2 — Tư vấn lô có vướng mắc pháp lý</div>
+    <div class="q-list" id="list2"></div>
+  </div>
+
+  <!-- MỤC ĐÍCH 3 -->
+  <div class="section" id="sec3">
+    <div class="section-title t3">📁 Mục đích 3 — Chuẩn bị hồ sơ trước khi đi xã</div>
+    <div class="q-list" id="list3"></div>
+  </div>
+
+  <div class="no-result" id="no-result">Không tìm thấy câu hỏi phù hợp. Thử từ khóa khác.</div>
+
+  <div class="footer-note">
+    <strong>Cách dùng:</strong> Bấm vào ô câu hỏi để copy — dán thẳng vào NotebookLM (notebook <em>TTHC Bắc Ninh Hòa</em>) để tra cứu. Lưu ý: thời gian giải quyết ở <strong>xã đồng bằng</strong> và <strong>xã miền núi/hải đảo</strong> có thể chênh nhau khoảng 10 ngày — hỏi rõ từng trường hợp.
+  </div>
+
+</div>
+
+<script>
+const questions = {
+  1: [
+    "Sang tên đất (chuyển nhượng) tại xã Bắc Ninh Hòa mất bao nhiêu ngày làm việc?",
+    "Sang tên đất cần chuẩn bị những giấy tờ gì?",
+    "Nộp hồ sơ sang tên đất ở đâu – Trung tâm hành chính công hay UBND xã?",
+    "Sang tên nhà đất mua từ dự án bất động sản thì làm thủ tục như thế nào?",
+    "Tặng cho đất cho con/cháu cần làm những gì, mất bao nhiêu ngày?",
+    "Thừa kế đất làm thủ tục ở đâu, mất bao lâu?",
+    "Thế chấp ngân hàng bằng quyền sử dụng đất quy trình thế nào?",
+    "Góp vốn bằng quyền sử dụng đất vào công ty làm thủ tục gì?",
+    "Sổ đỏ bị mất làm lại mất bao nhiêu ngày, cần làm gì trước?",
+    "Cấp đổi sổ đỏ cũ sang mẫu mới mất bao lâu, cần giấy gì?",
+    "Xây nhà ở riêng lẻ xin phép ở đâu, mất bao nhiêu ngày?",
+    "Sửa chữa, cải tạo nhà có cần xin giấy phép xây dựng không?",
+    "Giấy phép xây dựng hết hạn thì gia hạn thế nào, mất bao lâu?",
+    "Giấy phép xây dựng bị mất thì cấp lại ra sao?",
+    "Muốn biết lô đất thuộc quy hoạch gì thì xin thông tin ở đâu, mất bao nhiêu ngày?",
+    "Xin cung cấp thông tin quy hoạch đô thị và nông thôn bằng văn bản thời gian giải quyết là bao lâu?",
+    "Cấp phép sử dụng tạm thời lòng đường, vỉa hè để tập kết vật liệu xây dựng thì xin phép ở đâu, mất bao lâu?",
+    "Cấp phép sử dụng lòng đường, vỉa hè để làm đám tang quy trình như thế nào?",
+    "Thủ tục công nhận Ban quản trị nhà chung cư quy định thời gian giải quyết như thế nào?",
+    "Đất trồng lúa muốn chuyển đổi cơ cấu cây trồng, vật nuôi thì quy trình thực hiện tại cấp xã như thế nào?",
+    "Thời gian giải quyết thủ tục đất đai tại xã miền núi, hải đảo có khác biệt gì so với xã đồng bằng không?"
+  ],
+  2: [
+    "Lô đất đang là đất nông nghiệp muốn chuyển lên đất ở – quy trình thế nào, mất bao nhiêu ngày?",
+    "Chuyển mục đích sử dụng đất tại Bắc Ninh Hòa cần chuẩn bị gì?",
+    "Chuyển mục đích đất nông nghiệp sang mục đích khác có phải xin phép không?",
+    "Khách hàng muốn đăng ký chuyển mục đích sử dụng đất thuộc trường hợp không phải xin phép cơ quan nhà nước thì làm thủ tục gì?",
+    "Đất đang sử dụng không đúng mục đích thì hợp thức hóa như thế nào?",
+    "Hộ gia đình, cá nhân đang sử dụng đất không đúng mục đích (đã được giao/cho thuê/công nhận trước ngày 01/7/2014) muốn đăng ký cấp sổ đỏ thì xử lý thế nào?",
+    "Đất chưa có sổ (đăng ký lần đầu) thì làm thủ tục cấp sổ ở đâu, cần gì?",
+    "Hộ gia đình đã có sổ một phần, phần còn lại chưa cấp thì làm thế nào?",
+    "Thửa đất có diện tích thực tế lớn hơn sổ đỏ, làm sao bổ sung và cấp lại sổ?",
+    "Lô đất có diện tích tăng thêm do nhận chuyển nhượng một phần hoặc thay đổi ranh giới thì thủ tục đăng ký cấp sổ mới thực hiện ra sao?",
+    "Diện tích và ranh giới đất thực tế sai so với sổ đỏ thì điều chỉnh quyết định giao đất thế nào?",
+    "Đất giao đất cho thuê muốn chuyển đổi hình thức (từ thuê sang giao có thu tiền) quy trình như thế nào?",
+    "Lô đất công ty muốn nhận chuyển nhượng từ cá nhân thì cần thủ tục gì?",
+    "Doanh nghiệp muốn nhận góp vốn bằng quyền sử dụng đất thì làm thủ tục gì?",
+    "Lô đất trong dự án bất động sản muốn chuyển nhượng lại quy trình cấp sổ thế nào?",
+    "Chia thửa đất (tách thửa) làm thủ tục gì, mất bao lâu?",
+    "Hợp thửa (gộp 2 lô thành 1) làm thủ tục gì, mất bao lâu?",
+    "Đất có GPMB, yêu cầu bồi thường nhà nước thì nộp hồ sơ ở đâu, mất bao lâu?",
+    "Bồi thường nhà nước tạm ứng kinh phí tối thiểu bao nhiêu phần trăm thiệt hại?",
+    "Đang thuê đất Nhà nước muốn gia hạn thời hạn sử dụng thì làm gì?",
+    "Lô đất điều chỉnh quyết định giao đất do có sai sót ranh giới thì quy trình ra sao?",
+    "Xây dựng công trình cấp III, cấp IV cần xin phép ở đâu, thời gian bao lâu?",
+    "Di dời công trình xây dựng cần thủ tục gì, mất bao nhiêu ngày?",
+    "Điều chỉnh giấy phép xây dựng khi thay đổi thiết kế thì làm gì?",
+    "Khách hàng đã mua bán, chuyển quyền sử dụng đất trước ngày 01/8/2024 nhưng chưa làm thủ tục chuyển quyền – đăng ký cấp sổ hiện nay thế nào?",
+    "Lô đất nông nghiệp muốn sử dụng kết hợp đa mục đích thì quy trình phê duyệt phương án và thời gian bao lâu?",
+    "Lô đất có vướng mắc thay đổi quyền sử dụng đất do thỏa thuận phân chia của vợ/chồng hoặc thành viên hộ gia đình thì đăng ký biến động mất bao lâu?",
+    "Cấp sổ đỏ theo kết quả hòa giải thành, bản án Tòa án hoặc Thi hành án thì quy trình ra sao?",
+    "Lô đất thuộc khu vực lấn biển thì quy trình giao đất, cho thuê đất được giải quyết trong bao lâu?"
+  ],
+  3: [
+    "Hồ sơ sang tên đất (chuyển nhượng) gồm những gì cụ thể?",
+    "Hồ sơ tặng cho đất cho cá nhân gồm những gì?",
+    "Hồ sơ thừa kế đất gồm những gì?",
+    "Hồ sơ chuyển mục đích sử dụng đất gồm những gì?",
+    "Hồ sơ cấp sổ đỏ lần đầu (đăng ký lần đầu) gồm những gì?",
+    "Hồ sơ tách thửa (chia thửa đất) gồm những gì?",
+    "Hồ sơ xin phép xây dựng nhà ở riêng lẻ gồm những gì?",
+    "Hồ sơ cấp lại sổ đỏ bị mất gồm những gì?",
+    "Hồ sơ cấp đổi sổ đỏ gồm những gì?",
+    "Nộp hồ sơ đất đai trực tuyến được không, nộp trên cổng nào?",
+    "Trường hợp nào hồ sơ bị từ chối tiếp nhận?",
+    "Sau khi nộp hồ sơ thiếu thì có bao nhiêu ngày để bổ sung?",
+    "Thủ tục hành chính đất đai tại xã Bắc Ninh Hòa có phí/lệ phí không?",
+    "Đăng ký tài sản gắn liền với thửa đất đã có sổ (hoàn công nhà/công trình trên đất) thì cần hồ sơ gì, mất bao nhiêu ngày?",
+    "Có những thủ tục nào yêu cầu niêm yết công khai tại UBND xã và thời gian niêm yết là bao nhiêu ngày?",
+    "Thời gian để cơ quan Thuế ra thông báo xác định nghĩa vụ tài chính về đất đai là bao lâu kể từ khi nhận đủ hồ sơ liên thông?",
+    "Khi sổ đỏ bị mất, có bắt buộc phải đăng tin trên phương tiện thông tin đại chúng không, và đăng bao nhiêu lần trước khi nộp hồ sơ?"
+  ]
+};
+
+let currentTab = 'all';
+let currentSearch = '';
+
+function renderAll() {
+  [1,2,3].forEach(g => {
+    const list = document.getElementById('list' + g);
+    const color = ['c1','c2','c3'][g-1];
+    list.innerHTML = questions[g].map((q, i) => `
+      <div class="q-card" id="q${g}_${i}" data-group="${g}" data-text="${q.toLowerCase()}" onclick="copyQ(this, '${q.replace(/'/g,"\\'")}')">
+        <div class="q-num ${color}">${i+1}</div>
+        <div class="q-text">${q}</div>
+        <button class="copy-btn" onclick="event.stopPropagation(); copyQ(document.getElementById('q${g}_${i}'), '${q.replace(/'/g,"\\'")}')">Copy</button>
+      </div>
+    `).join('');
+  });
+}
+
+function copyQ(el, text) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = el.querySelector('.copy-btn');
+    if (btn) { btn.textContent = '✓ Đã copy'; btn.classList.add('copied'); }
+    el.classList.add('highlight');
+    setTimeout(() => {
+      if (btn) { btn.textContent = 'Copy'; btn.classList.remove('copied'); }
+      el.classList.remove('highlight');
+    }, 1800);
+  });
+}
+
+function filterTab(tab, btn) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.className = 'tab-btn');
+  if (tab === 'all') btn.classList.add('active-all');
+  else if (tab === '1') btn.classList.add('active-1');
+  else if (tab === '2') btn.classList.add('active-2');
+  else if (tab === '3') btn.classList.add('active-3');
+
+  [1,2,3].forEach(g => {
+    const sec = document.getElementById('sec' + g);
+    if (tab === 'all' || tab === String(g)) sec.style.display = '';
+    else sec.style.display = 'none';
+  });
+  doSearch(currentSearch);
+}
+
+function doSearch(val) {
+  currentSearch = val.trim().toLowerCase();
+  let total = 0;
+  const allCards = document.querySelectorAll('.q-card');
+
+  allCards.forEach(card => {
+    const group = card.dataset.group;
+    const text = card.dataset.text;
+    const inTab = currentTab === 'all' || currentTab === group;
+    const inSearch = !currentSearch || text.includes(currentSearch);
+
+    if (inTab && inSearch) {
+      card.classList.remove('hidden');
+      // highlight
+      const textEl = card.querySelector('.q-text');
+      const origQ = questions[parseInt(group)][Array.from(card.parentNode.children).indexOf(card)];
+      if (currentSearch && origQ) {
+        const re = new RegExp('(' + currentSearch.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+        textEl.innerHTML = origQ.replace(re, '<mark>$1</mark>');
+      } else if (origQ) {
+        textEl.textContent = origQ;
+      }
+      total++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  const noResult = document.getElementById('no-result');
+  noResult.classList.toggle('show', total === 0);
+
+  const countEl = document.getElementById('search-count');
+  if (currentSearch) countEl.textContent = `Tìm thấy ${total} câu hỏi`;
+  else countEl.textContent = '';
+}
+
+renderAll();
+</script>
+</body>
+</html>
